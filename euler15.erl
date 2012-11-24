@@ -1,16 +1,16 @@
+#!/usr/bin/env escript
+
 % Problem15:
 % Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.
 % How many routes are there through a 20×20 grid?
 
--module (euler15).
-
--export ([start/0]).
+-mode(compile).
 
 -define (COLS, 20).
 -define (ROWS, 20).
 
 % Perhaps not the easiest code to read... be warned.
-start() ->
+main(_)->
     MatrixBottomRow = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     Matrix = make_matrix([MatrixBottomRow], ?ROWS),
     [[Answer | _ ] | _] = Matrix,

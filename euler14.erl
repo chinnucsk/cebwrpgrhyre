@@ -1,4 +1,4 @@
-
+#!/usr/bin/env escript
 % Problem14:
 % The following iterative sequence is defined for the set of positive integers:
 
@@ -14,17 +14,15 @@
 
 % NOTE: Once the chain starts the terms are allowed to go above one million.
 
--module (euler14).
-
--export ([start/0]).
+-mode(compile).
 
 -define (START, 999999).
 
-start() ->
+main(_) ->
 	{_, StartSec, _} = now(),
 	{HighScore, HighScoreHolder} = longest_sequence(?START),
 	{_, EndSec, _} = now(),
-	io:format("HighScore: ~w, HighScoreHolder: ~w, ExecutionTime: ~w~n seconds", [HighScore, HighScoreHolder, EndSec - StartSec]).
+	io:format("HighScore: ~w, HighScoreHolder: ~w, ExecutionTime: ~w seconds~n", [HighScore, HighScoreHolder, EndSec - StartSec]).
 
 longest_sequence(StartNumber) ->
 	longest_sequence_tr(StartNumber, StartNumber, 1, 1, 1).

@@ -1,11 +1,10 @@
+#!/usr/bin/env escript
 % problem13:
 % Work out the first ten digits of the sum of the following one-hundred 50-digit numbers (Numbers are in the code).
 
--module (euler13).
+-mode (compile).
 
--export ([start/0]).
-
-start() ->
+main(_) ->
 	N1 = 37107287533902102798797998220837590246510135740250,
 	N2 = 46376937677490009712648124896970078050417018260538,
 	N3 = 74324986199524741059474233309513058123726617309629,
@@ -116,9 +115,4 @@ start() ->
 	N71 + N72 + N73 + N74 + N75 + N76 + N77 + N78 + N79 + N80 +
 	N81 + N82 + N83 + N84 + N85 + N86 + N87 + N88 + N89 + N90 +
 	N91 + N92 + N93 + N94 + N95 + N96 + N97 + N98 + N99 + N100,
-	io:format("Answer ~w~n", [Answer]).
-
-
-
-	
-
+	io:format("Answer (all digits): ~w~n", [Answer]).

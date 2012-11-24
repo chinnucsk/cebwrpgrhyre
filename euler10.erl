@@ -1,14 +1,13 @@
+#!/usr/bin/env escript
 % Problem10:
 % The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 % Find the sum of all the primes below two million.
 
--module (euler10).
-
--export ([start/0]).
+-mode(compile).
 
 -define (STOP_VALUE, 2000000).
 
-start() ->
+main(_) ->
 	Answer = sum_of_primes(?STOP_VALUE),
 	io:format("Answer: ~w~n", [Answer]).	
 
