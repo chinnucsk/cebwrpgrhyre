@@ -1,6 +1,6 @@
 -module (eulerlib).
 
--export ([parse_digits/1, fac/1, proper_divisors/1]).
+-export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -41,3 +41,29 @@ proper_divisors(Number, Candidate, Acc) ->
       Acc
   end,
   proper_divisors(Number, Candidate + 1, Acc2).
+
+%% ----------------------------------
+%% @doc Returns the maximum of Num1 and Num2.
+%% If both numbers are equal Num1 is returned.
+%% @end
+%% ----------------------------------
+max(Num1, Num2) ->
+  if
+    Num1 >= Num2 ->
+      Num1;
+    true ->
+      Num2
+  end.
+
+%% ----------------------------------
+%% @doc Returns the minimum of Num1 and Num2.
+%% If both numbers are equal Num1 is returned.
+%% @end
+%% ----------------------------------
+min(Num1, Num2) ->
+  if
+    Num1 =< Num2 ->
+      Num1;
+    true ->
+      Num2
+  end.
