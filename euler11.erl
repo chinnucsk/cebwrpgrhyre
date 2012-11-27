@@ -8,6 +8,7 @@
 % What is the greatest product of four adjacent numbers in any direction (up, down, left, right, or diagonally) in the 20×20 grid?
 
 % Authors note: This solution really sucks. Its been a mess to write!
+% Note: This code is currently not functional!!!!
 
 -mode(compile).
 
