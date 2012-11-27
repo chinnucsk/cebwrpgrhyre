@@ -1,6 +1,6 @@
 -module (eulerlib).
 
--export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2]).
+-export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2, parse_int_problem_file/1]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -67,3 +67,29 @@ min(Num1, Num2) ->
     true ->
       Num2
   end.
+
+%% ----------------------------------
+%% @doc Parses a plain text file containing integer problem data.
+%% The data in the file must have Unix file endings '\n' and
+%% the individual tokens in the file must be space separated.
+%% The file is returned as a list of lists, one for each row 
+%% in the file.
+%% @end
+%% ----------------------------------
+parse_int_problem_file(Filename) ->
+  {ok, IoDevice} = file:open(Filename, [read]),
+  parse_int_problem_file(IoDevice, []).
+
+parse_int_problem_file(IoDevice, Acc) ->
+  case file:read_line(IoDevice) of
+    {ok, Data} ->
+      Data2    = string:strip(Data, right, $\n),
+      Data3    = string:tokens(Data2, " "),
+      IntList  = [list_to_integer(X) || X <- Data3],
+      parse_int_problem_file(IoDevice, [IntList|Acc]);
+    eof ->
+      lists:reverse(Acc);
+    _ ->
+      io:write("Errrrrrror when parsing file~n"),
+      error
+  end. 
