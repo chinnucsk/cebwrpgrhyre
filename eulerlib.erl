@@ -1,6 +1,6 @@
 -module (eulerlib).
 
--export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2, parse_int_problem_file/1]).
+-export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2, parse_int_problem_file/1, map_reduce/3]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -93,3 +93,44 @@ parse_int_problem_file(IoDevice, Acc) ->
       io:write("Errrrrrror when parsing file~n"),
       error
   end. 
+
+%% ----------------------------------
+%% @doc A simple map-reduce implementation.
+%% MapFun    => Function that does the mapping
+%% ReduceFun => Function that does the reduction
+%% Data      => The data that the mappers should work on. 
+%%              One mapper will be spawned for each term in this list.
+%% Acc0      => Initial accumulator that will be passed to the reducer  
+%% @end
+%% ----------------------------------
+map_reduce(MapFun, ReduceFun, Data, Acc0) ->
+  SelfPid = self(),
+  ReducerPid = spawn(fun () -> reducer(SelfPid, ReduceFun, length(Data), Acc0) end),
+  lists:foreach(fun (X) ->
+                  spawn(fun () -> mapper(ReducerPid, MapFun, X) end)
+                end, Data),
+  receive  
+    {ReducerPid, Result} ->
+      Result;
+    Error ->
+      Error
+  end.
+
+reducer(ParentPid, ReduceFun, Remaining, Acc) ->
+  receive
+    {mapper_done, Result} ->
+      Remaining2 = Remaining - 1,
+      Acc2 = ReduceFun(Result, Acc),
+      case Remaining2 > 0 of
+        true ->
+          reducer(ParentPid, ReduceFun, Remaining2, Acc2);
+        false ->
+          ParentPid ! {self(), Acc2}
+      end;
+    Error ->
+      Error
+  end. 
+
+mapper(ReducerPid, MapperFun, X) ->
+  Result = MapperFun(X),
+  ReducerPid ! {mapper_done, Result}.
