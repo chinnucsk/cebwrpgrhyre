@@ -1,6 +1,4 @@
-%#!/usr/bin/env escript
-%% -*- erlang -*-
-%%! -smp enable
+#!/usr/bin/env escript
 
 % A perfect number is a number for which the sum of its proper divisors is exactly equal to the number. 
 % For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.
@@ -11,40 +9,27 @@
 % expressed as the sum of two abundant numbers is less than this limit.
 % Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 
-%-mode(compile).
+% NOTE: For some strange (memory) reason this program will crash if run with the -n flag on R15B01.
 
--module(euler23).
+-mode(compile).
 
--export([main/1]).
-
--define (MAX_SEARCH, 14062).
+-define (MAXIMUM, 28123).
 
 main(_) ->
   io:format("Finding all abduant numbers...~n"),
-  AbduantNumbers = all_abduant_numbers(?MAX_SEARCH),
-  Mapper  = fun ([H|_] = AbudantNumbers) -> 
-             [H + X || X <- AbudantNumbers]
-            end,
-  Reducer = fun (X, Acc) ->
-              lists:umerge(X, Acc)
-            end,  
-  io:format("Preparing to Map-Reduce...~n"),         
-  Data = prepare_mapreduce(AbduantNumbers, []),
-  io:format("Map-Reduce ready! nMappers = ~w~n", [length(Data)]),         
-  io:format("Map-Reducing...~n"),
-  AbduantCombinations = eulerlib:mapreduce(Mapper, Reducer, Data, []),
-  io:format("Sorting...~n"),
-  AbudantCombinationsSorted = lists:sort(AbduantCombinations),
-  io:format("Extracting non-abudant numbers...~n"),
-  AllNumbers = lists:seq(1,28123),
-  NonAbudantNumbers = eulerlib:sieve_list(AllNumbers, AbudantCombinationsSorted),
-  io:format("NonAbudantNumbers: ~w~n", [NonAbudantNumbers]).
+  AbduantNumbers = all_abduant_numbers(?MAXIMUM),
 
-prepare_mapreduce([], Acc) ->
-  Acc;
-prepare_mapreduce([_|T] = AllAbudantNumbers, Acc) ->
-  Acc2 = [AllAbudantNumbers|Acc],
-  prepare_mapreduce(T, Acc2).
+  io:format("Generating abduant pairs...~n"),
+  AbduantPairs = [X + Y || X <- AbduantNumbers, Y <- AbduantNumbers],
+
+  io:format("Sorting and removing duplicates...~n"),
+  AbduantPairsSorted = lists:usort(AbduantPairs),
+
+  io:format("Sieving non-abduant numbers...~n"),
+  AllNumbers = lists:seq(1,?MAXIMUM),
+  Residue    = lists:subtract(AllNumbers, AbduantPairsSorted),
+
+  io:format("Answer: ~w~n", [lists:sum(Residue)]).
 
 all_abduant_numbers(Limit) ->
   all_abduant_numbers(Limit, 1, []).

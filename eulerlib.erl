@@ -1,6 +1,8 @@
 -module (eulerlib).
 
--export ([parse_digits/1, fac/1, proper_divisors/1, max/2, min/2, parse_int_problem_file/1, map_reduce/3]).
+-export ([parse_digits/1, fac/1, proper_divisors/1, 
+          max/2, min/2, parse_int_problem_file/1, 
+          mapreduce/4, sieve_list/2]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -103,12 +105,18 @@ parse_int_problem_file(IoDevice, Acc) ->
 %% Acc0      => Initial accumulator that will be passed to the reducer  
 %% @end
 %% ----------------------------------
-map_reduce(MapFun, ReduceFun, Data, Acc0) ->
+mapreduce(MapFun, ReduceFun, Data, Acc0) ->
   SelfPid = self(),
+  io:format("Processes before map-reduce spawn: ~w~n", [length(processes())]),
   ReducerPid = spawn(fun () -> reducer(SelfPid, ReduceFun, length(Data), Acc0) end),
   lists:foreach(fun (X) ->
                   spawn(fun () -> mapper(ReducerPid, MapFun, X) end)
                 end, Data),
+  io:format("Processes after map-reduce spawn: ~w~n", [length(processes())]),
+  timer:sleep(1000),
+  io:format("Processes 1 sec map-reduce spawn: ~w~n", [length(processes())]),
+  timer:sleep(1000),
+  io:format("Processes 2 sec map-reduce spawn: ~w~n", [length(processes())]),
   receive  
     {ReducerPid, Result} ->
       Result;
@@ -134,3 +142,15 @@ reducer(ParentPid, ReduceFun, Remaining, Acc) ->
 mapper(ReducerPid, MapperFun, X) ->
   Result = MapperFun(X),
   ReducerPid ! {mapper_done, Result}.
+
+%% ----------------------------------
+%% @doc Numbers that are in Sieve will be removed from list
+%% @end
+%% ----------------------------------
+sieve_list(List, Sieve) ->
+  [X || X <- List, trueiffalse(lists:member(X, Sieve))].
+
+trueiffalse(false)-> 
+  true;
+trueiffalse(_) -> 
+  false.
