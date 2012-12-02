@@ -4,8 +4,12 @@
 
 -compile(export_all).
 
+list_to_integer_test() ->
+  Expected = 12345,
+  Actual   = eulerlib:numlist_to_integer([1,2,3,4,5]),
+  ?assertMatch(Expected, Actual).
+
 proper_divisors_test() ->
-  Expected = [14, 7, 4, 2, 1],
   Actual   = eulerlib:proper_divisors(28),
   ?assertMatch([14, 7, 4, 2, 1], Actual).
 
@@ -26,3 +30,4 @@ mapreduce_test() ->
             end,
   Answer  = eulerlib:mapreduce(Mapper, Reducer, Data, []),  
   ?assertMatch([1,2,3,4,5,6], Answer).
+

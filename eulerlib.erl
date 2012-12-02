@@ -2,7 +2,7 @@
 
 -export ([parse_digits/1, fac/1, proper_divisors/1, 
           max/2, min/2, parse_int_problem_file/1, 
-          mapreduce/4, sieve_list/2]).
+          mapreduce/4, numlist_to_integer/1]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -13,6 +13,22 @@
 parse_digits(Number) ->
 	StringList = integer_to_list(Number),
 	[list_to_integer([X]) || X <- StringList].
+
+%% ----------------------------------
+%% @doc Interprets a list as a base-10 integer number.
+%% List is interpreted in a big-endian sense, and each position in the 
+%% list is interpreted as a power of 10 lower than the previous one (=the position to the left).
+%% @end
+%% ----------------------------------
+numlist_to_integer(List) ->
+  numlist_to_integer(List, 0).
+
+numlist_to_integer([], Acc) ->
+  round(Acc);
+numlist_to_integer([H|T] = List, Acc) ->
+  Factor = math:pow(10, length(List) - 1),
+  Acc2 = Acc + (Factor * H),
+  numlist_to_integer(T, Acc2).
 
 %% ----------------------------------
 %% @doc Calculates the faculty of the number passed as an argument. 
@@ -142,13 +158,7 @@ reducer(ParentPid, ReduceFun, Remaining, Acc) ->
 mapper(ReducerPid, MapperFun, X) ->
   Result = MapperFun(X),
   ReducerPid ! {mapper_done, Result}.
-
 %% ----------------------------------
-%% @doc Numbers that are in Sieve will be removed from list
-%% @end
-%% ----------------------------------
-sieve_list(List, Sieve) ->
-  [X || X <- List, trueiffalse(lists:member(X, Sieve))].
 
 trueiffalse(false)-> 
   true;
