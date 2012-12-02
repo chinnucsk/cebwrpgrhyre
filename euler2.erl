@@ -8,18 +8,17 @@
 -define(LIMIT, 4000000).
 
 main(_) ->
-	FibonacciTerms = fibonacci_sequence(?LIMIT),
+	FibonacciTerms = eulerlib:fibonacci_sequence(?LIMIT),
 	EvenFibonacciTerms = [X || X <- FibonacciTerms, X rem 2 =:= 0],
 	Answer = lists:sum(EvenFibonacciTerms),
 	io:format("Answer: ~w~n", [Answer]).
 
 fibonacci_sequence(Limit) ->
-	fibonacci_sequence_tr(Limit, [2,1]).
+  fibonacci_sequence_tr(Limit, [2,1]).
 
 fibonacci_sequence_tr(Limit, [First|T] = Numbers) when First < Limit ->
-	[Second | _] = T,
-	Next = First + Second,
-	fibonacci_sequence_tr(Limit, [Next|Numbers]);
-
+  [Second | _] = T,
+  Next = First + Second,
+  fibonacci_sequence_tr(Limit, [Next|Numbers]);
 fibonacci_sequence_tr(Limit, [H|T]) when H >= Limit ->
-	T. 
+  T. 

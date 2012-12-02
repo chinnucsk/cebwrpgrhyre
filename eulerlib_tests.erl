@@ -1,6 +1,7 @@
 -module (eulerlib_tests).
 
 -include_lib("eunit/include/eunit.hrl").
+-include_lib("eulerlib.hrl").
 
 -compile(export_all).
 
@@ -8,6 +9,17 @@ list_to_integer_test() ->
   Expected = 12345,
   Actual   = eulerlib:numlist_to_integer([1,2,3,4,5]),
   ?assertMatch(Expected, Actual).
+
+fib_iter_test() ->
+  S  = #fibstate{},
+  S2 = eulerlib:fib_iter(S),
+  S3 = eulerlib:fib_iter(S2),
+  S4 = eulerlib:fib_iter(S3),
+  ?assertMatch(3, S2#fibstate.first),
+  ?assertMatch(3, S2#fibstate.n),
+  ?assertMatch(5, S3#fibstate.first),
+  ?assertMatch(4, S3#fibstate.n),
+  ?assertMatch(8, S4#fibstate.first).
 
 proper_divisors_test() ->
   Actual   = eulerlib:proper_divisors(28),
@@ -30,4 +42,6 @@ mapreduce_test() ->
             end,
   Answer  = eulerlib:mapreduce(Mapper, Reducer, Data, []),  
   ?assertMatch([1,2,3,4,5,6], Answer).
+
+
 

@@ -1,8 +1,11 @@
 -module (eulerlib).
 
+-include ("eulerlib.hrl").
+
 -export ([parse_digits/1, fac/1, proper_divisors/1, 
           max/2, min/2, parse_int_problem_file/1, 
-          mapreduce/4, numlist_to_integer/1]).
+          mapreduce/4, numlist_to_integer/1,
+          fib_iter/1]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -31,6 +34,19 @@ numlist_to_integer([H|T] = List, Acc) ->
   numlist_to_integer(T, Acc2).
 
 %% ----------------------------------
+%% @doc Counts the number of digits in a base-10 number.
+%% @end
+%% ----------------------------------
+count_digits(Number) ->
+  count_digits(Number, 0).
+
+count_digits(Number, Acc) when Number > 0 ->
+  NumberNext = Number div 10,
+  count_digits(NumberNext, Acc + 1); 
+count_digits(_, Acc) ->
+  Acc.
+
+%% ----------------------------------
 %% @doc Calculates the faculty of the number passed as an argument. 
 %% @end
 %% ----------------------------------
@@ -41,6 +57,15 @@ fac_tr(0, Acc) ->
 	Acc;
 fac_tr(Number, Acc) ->
 	fac_tr(Number - 1, Acc * Number).
+
+%% ----------------------------------
+%% @doc Iterate thorugh all fibonacci numbers, c-style. Returns an updated state with the newest number as next.
+%% @end
+%% ----------------------------------
+fib_iter(S) ->
+  #fibstate{first  = S#fibstate.first + S#fibstate.second,
+            second = S#fibstate.first,
+            n      = S#fibstate.n + 1}.
 
 %% ----------------------------------
 %% @doc Returns all the proper divisors of a number.

@@ -15,5 +15,5 @@ main(_) ->
 
 permutations([]) -> 
   [[]];
-permutations(L) ->
-  [[H|T] || H <- L, T <- permutations(L--[H])].
+permutations(List) ->
+  [[H|T] || H <- List, T <- permutations(List--[H])].
