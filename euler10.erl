@@ -17,22 +17,10 @@ sum_of_primes(StopValue) ->
 sum_of_primes_tr(StopValue, PrimeCandidate, Sum) when PrimeCandidate =:= StopValue ->
 	Sum;
 sum_of_primes_tr(StopValue, PrimeCandidate, Sum) ->
-	case is_prime(PrimeCandidate) of
+	case eulerlib:is_prime(PrimeCandidate) of
 		true ->
 			NewSum = Sum + PrimeCandidate,
 			sum_of_primes_tr(StopValue, PrimeCandidate + 1, NewSum);
 		false ->
 			sum_of_primes_tr(StopValue, PrimeCandidate + 1, Sum)
 	end.
-
-is_prime(Number) when Number rem 2 /= 0 ->
-	is_prime_tr(Number, 2, math:sqrt(Number));
-is_prime(_) ->
-	false.
-
-is_prime_tr(_Number, Divisor, MaxTestVal) when Divisor > MaxTestVal ->
-	true;
-is_prime_tr(Number, Divisor, _MaxTestVal) when Number rem Divisor =:= 0 ->
-	false;
-is_prime_tr(Number, Divisor, MaxTestVal) ->
-	is_prime_tr(Number, Divisor + 1, MaxTestVal).

@@ -5,7 +5,8 @@
 -export ([parse_digits/1, fac/1, proper_divisors/1, 
           max/2, min/2, parse_int_problem_file/1, 
           mapreduce/4, numlist_to_integer/1,
-          fib_iter/1]).
+          fib_iter/1, count_digits/1, is_prime/1,
+          abs/1]).
 
 %% ----------------------------------
 %% @doc Parses a base 10 number into its individual digits.
@@ -84,6 +85,25 @@ proper_divisors(Number, Candidate, Acc) ->
       Acc
   end,
   proper_divisors(Number, Candidate + 1, Acc2).
+
+%% ----------------------------------
+%% @doc Checks is a number is a prime or not. 
+%% Number that is tested must be a true integer, e.g 123 (123.0 is not ok).
+%% @end
+%% ----------------------------------
+is_prime(2) ->
+  true;
+is_prime(Number) when Number rem 2 /= 0 ->
+  is_prime_tr(Number, 2, math:sqrt(Number));
+is_prime(_) ->
+  false.
+
+is_prime_tr(_Number, Divisor, MaxTestVal) when Divisor > MaxTestVal ->
+  true;
+is_prime_tr(Number, Divisor, _MaxTestVal) when Number rem Divisor == 0 ->
+  false;
+is_prime_tr(Number, Divisor, MaxTestVal) ->
+  is_prime_tr(Number, Divisor + 1, MaxTestVal).
 
 %% ----------------------------------
 %% @doc Returns the maximum of Num1 and Num2.
@@ -185,7 +205,7 @@ mapper(ReducerPid, MapperFun, X) ->
   ReducerPid ! {mapper_done, Result}.
 %% ----------------------------------
 
-trueiffalse(false)-> 
-  true;
-trueiffalse(_) -> 
-  false.
+abs(Num) when Num < 0 -> 
+  -Num;
+abs(Num) ->
+  Num.
