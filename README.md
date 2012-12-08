@@ -2,7 +2,7 @@ PE-solutions
 ============
 
 Solutions to problems from a website named after a fameous mathemetican
-Name in rot13: cebwrpg-rhyre.pbz (because of google).
+Name in rot13: cebwrpgrhyre.arg (because of google).
 All solutions to this date are written in Erlang and are invoked using escript. 
 Most problems solve fairly quickly but sometimes an increase in speed can be 
 gained by using the -n flag, forcing native compilation of the code.
