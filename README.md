@@ -14,7 +14,7 @@ Installation Instructions
 downloaded from erlang.org for Win/Linux/Mac. You should also install git but
 since you are here you have probably done that already.
 
-2, Clone this repo to your harddrive from the prompt:
+2, Clone this repo to your harddrive from the prompt: 
 git clone https://github.com/R4zzM/pe-solutions.git
 
 3, Compile the library, at the prompt type:
@@ -22,9 +22,9 @@ git clone https://github.com/R4zzM/pe-solutions.git
 
 4, This is optional but you can make sure that everything is in order by 
 running the tests. At the prompt type:
-./rebar eunit
+<code>./rebar eunit</code>
 
-4, Go into the escript folder and run any of the scripts. The answer should be
+5, Go into the escript folder and run any of the scripts. The answer should be
 printed to the prompt.
 
 Misc
