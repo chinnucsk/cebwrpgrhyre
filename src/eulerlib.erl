@@ -16,7 +16,7 @@
 -include ("eulerlib.hrl").
 
 -export ([parse_digits/1, fac/1, proper_divisors/1, 
-          max/2, min/2, parse_int_problem_file/1, 
+          parse_int_problem_file/1, 
           mapreduce/4, numlist_to_integer/1,
           fib_iter/1, count_digits/1, is_prime/1,
           abs/1]).
@@ -64,11 +64,13 @@ numlist_to_integer([H|T] = List, Acc) ->
   numlist_to_integer(T, Acc2).
 
 %% ----------------------------------
-%% @doc Counts the number of digits in a base-10 number.
-%% @end
+%% @doc Counts the number of digits in a base-10 number.%
+% @end
 %% ----------------------------------
 -spec count_digits(Number :: integer()) -> integer().
 
+count_digits(0) ->
+  1;
 count_digits(Number) ->
   count_digits(Number, 0).
 
@@ -142,35 +144,6 @@ is_prime_tr(Number, Divisor, _MaxTestVal) when Number rem Divisor == 0 ->
   false;
 is_prime_tr(Number, Divisor, MaxTestVal) ->
   is_prime_tr(Number, Divisor + 1, MaxTestVal).
-
-%% ----------------------------------
-%% @doc Returns the maximum of Num1 and Num2.
-%% If both numbers are equal Num1 is returned.
-%% @deprecated use erlang:max instead.
-%% @end
-%% ----------------------------------
-
-max(Num1, Num2) ->
-  if
-    Num1 >= Num2 ->
-      Num1;
-    true ->
-      Num2
-  end.
-
-%% ----------------------------------
-%% @doc Returns the minimum of Num1 and Num2.
-%% If both numbers are equal Num1 is returned.
-%% @deprecated use erlang:min instead.
-%% @end
-%% ----------------------------------
-min(Num1, Num2) ->
-  if
-    Num1 =< Num2 ->
-      Num1;
-    true ->
-      Num2
-  end.
 
 %% ----------------------------------
 %% @doc Parses a plain text file containing integer problem data.

@@ -44,7 +44,7 @@ longest_prime_seq([], Acc) ->
 longest_prime_seq([H|T], {OldMax, _} = Acc) ->
   Res = seq_length({0, H}),
   {Len, _} = Res,
-  case eulerlib:max(OldMax, Len) of 
+  case max(OldMax, Len) of 
     OldMax ->
       longest_prime_seq(T, Acc);
     Len ->
