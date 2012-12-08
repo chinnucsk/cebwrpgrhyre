@@ -12,16 +12,16 @@ Installation Instructions
 
 1, Install Erlang/Otp for the platorm that you are currently on. Binaries can be 
 downloaded from erlang.org for Win/Linux/Mac. You should also install git but
-since you are here you have probably done that already.
+since you are here you have probably done that already.<br/>
 
-2, Clone this repo to your harddrive from the prompt: 
-git clone https://github.com/R4zzM/pe-solutions.git
+2, Clone this repo to your harddrive from the prompt:<br/>
+<code>git clone https://github.com/R4zzM/pe-solutions.git</code>
 
-3, Compile the library, at the prompt type:
-./rebar compile
+3, Compile the library, at the prompt type:<br/>
+<code>./rebar compile</code>
 
 4, This is optional but you can make sure that everything is in order by 
-running the tests. At the prompt type:
+running the tests.<br/>
 <code>./rebar eunit</code>
 
 5, Go into the escript folder and run any of the scripts. The answer should be
